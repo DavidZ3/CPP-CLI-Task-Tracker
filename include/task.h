@@ -5,8 +5,10 @@ enum Status : char { todo, inprogress, done };
 typedef std::uint16_t Id;
 
 class Task {
+   public:
     Task(Id id, std::string description);
     Task(Id id, std::string description, Status status);
+    Task(Id id, std::string description, Status status, std::time_t createdAt, std::time_t updatedAt);
 
    private:
     Id id;
@@ -17,6 +19,7 @@ class Task {
     void updateUpdatedAtToNow();
 
    public:
+    operator std::string () const;
     Id getId() { return this->id; }
     Status getStatus() { return this->status; }
     std::string getDescription() { return this->description; }
