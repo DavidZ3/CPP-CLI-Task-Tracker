@@ -70,17 +70,3 @@ std::vector<Task> JsonTaskStorage::loadTasks() {
     }
     return tasks;
 }
-
-int main() {
-    JsonTaskStorage storage = JsonTaskStorage("./tasks.json");
-    std::vector<Task> tasks{Task(1, "some_test_task"),
-                            Task(2, "yet_another_test_task"),
-                            Task(3, "\"Sus\" Task")};
-    storage.writeTasks(tasks);
-
-    std::vector<Task> loadedTasks(storage.loadTasks());
-    std::cout << "Printing Loaded Tasks:" << std::endl;
-    for(auto t: loadedTasks){
-        std::cout << std::string(t);
-    }
-}
