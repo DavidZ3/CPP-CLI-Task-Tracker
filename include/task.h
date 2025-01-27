@@ -20,11 +20,11 @@ class Task {
 
    public:
     operator std::string () const;
-    Id getId() { return this->id; }
-    Status getStatus() { return this->status; }
-    std::string getDescription() { return this->description; }
-    std::time_t getCreatedAt() { return this->createdAt; }
-    std::time_t getUpdatedAt() { return this->updatedAt; }
+    Id getId() const { return this->id; }
+    Status getStatus() const { return this->status; }
+    std::string getDescription() const { return this->description; }
+    std::time_t getCreatedAt() const { return this->createdAt; }
+    std::time_t getUpdatedAt() const { return this->updatedAt; }
     void updateStatus(Status status);
     void updateDescription(std::string description);
 };
