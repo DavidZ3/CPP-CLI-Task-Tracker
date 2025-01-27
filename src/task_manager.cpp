@@ -6,20 +6,25 @@
 
 #include "json_task_storage.h"
 #include "task.h"
-TaskManager::TaskManager(const std::string& jsonPath)
-    : storage(jsonPath), tasks(storage.loadTasks()) {
+TaskManager::TaskManager(const std::string& jsonPath) : storage(jsonPath) {
+    JsonTaskStorage storage(jsonPath);
+    tasks = storage.loadTasks();
     auto maxId = std::max_element(
         tasks.begin(), tasks.end(), [](Task const& lTask, Task const& rTask) {
             return (int)lTask.getId() < (int)rTask.getId();
         });
-    nextId = (Id)maxId->getId() + 1;
+    if (maxId != tasks.end()){
+        nextId = (Id)maxId->getId() + 1;
+    }else{
+        nextId = 0;
+    }
 };
 
 Id TaskManager::addTask(const std::string& description) {
     tasks.push_back(Task(nextId, std::move(description)));
     storage.writeTasks(tasks);
     nextId += 1;
-    return nextId-1;
+    return nextId - 1;
 }
 
 std::vector<Task>::iterator TaskManager::locateTaskById(Id id) {
@@ -59,4 +64,29 @@ bool TaskManager::updateTaskStatus(Id id, Status status) {
     it->updateStatus(status);
     storage.writeTasks(tasks);
     return true;
+}
+
+std::vector<Task> TaskManager::getTasksByStatus(Status status) const {
+    std::vector<Task> tasksByStatus;
+    std::copy_if(tasks.begin(), tasks.end(), std::back_inserter(tasksByStatus),
+                 [status](const Task& t) { return t.getStatus() == status; });
+    return tasksByStatus;
+}
+
+int main() {
+    std::cout << "Program started" << std::endl;
+    TaskManager manager("./tasks.json");
+    auto tasks{manager.getTasks()};
+    std::cout << "Printing Tasks:" << std::endl;
+    for (auto t : tasks) {
+        std::cout << std::string(t);
+    }
+    manager.addTask("This is another task :D");
+    manager.updateTaskStatus(3, Status::inprogress);
+
+    auto tasks2{manager.getTasks()};
+    std::cout << "Printing Tasks:" << std::endl;
+    for (auto t : tasks2) {
+        std::cout << std::string(t);
+    }
 }

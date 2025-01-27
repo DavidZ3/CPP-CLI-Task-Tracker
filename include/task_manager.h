@@ -12,6 +12,8 @@ class TaskManager {
     bool removeTask(Id id);
     bool updateTaskDescription(Id id, const std::string& description);
     bool updateTaskStatus(Id id, Status status);
+    std::vector<Task> getTasks() const {return tasks;};
+    std::vector<Task> getTasksByStatus(Status status) const;
 
    private:
     Id nextId;
