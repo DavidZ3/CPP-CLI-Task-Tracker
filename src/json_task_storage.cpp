@@ -37,7 +37,7 @@ void JsonTaskStorage::writeTasks(std::vector<Task> tasks) {
     std::ofstream file(jsonPath);
     file << "{\n\t\"tasks\": [\n";
     for (auto task : tasks) {
-        file << std::string(task);
+        file << "\t\t" << std::string(task);
     }
     file << "\t]\n}";
 };
@@ -62,11 +62,6 @@ std::vector<Task> JsonTaskStorage::loadTasks() {
     while (std::getline(file, line)) {
         std::smatch matchs;
         if (std::regex_match(line, matchs, taskRePattern)) {
-            // std::cout << "Matches 1: " << matchs[1] << std::endl;
-            // std::cout << "Matches 2: " << matchs[2] << std::endl;
-            // std::cout << "Matches 3: " << matchs[3] << std::endl;
-            // std::cout << "Matches 4: " << matchs[4] << std::endl;
-            // std::cout << "Matches 5: " << matchs[5] << std::endl;
             Task t(std::stoi(matchs[1]), unescapeQuotes(matchs[3]),
                    (Status)std::stoi(matchs[2]), (time_t)std::stoi(matchs[4]),
                    (time_t)std::stoi(matchs[5]));
@@ -86,7 +81,6 @@ int main() {
     std::vector<Task> loadedTasks(storage.loadTasks());
     std::cout << "Printing Loaded Tasks:" << std::endl;
     for(auto t: loadedTasks){
-        std::cout << t.getId() << std::endl;
-        std::cout << std::string(t) << std::endl;
+        std::cout << std::string(t);
     }
 }

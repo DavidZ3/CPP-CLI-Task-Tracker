@@ -35,7 +35,7 @@ Task::Task(Id id, std::string description, Status status, std::time_t createdAt,
 void Task::updateUpdatedAtToNow() { this->updatedAt = std::time(nullptr); }
 
 Task::operator std::string() const {
-    std::string output = "\t\t{\"id\": " + std::to_string(id) +
+    std::string output = "{\"id\": " + std::to_string(id) +
                          ", \"status\": " + std::to_string(status) +
                          ", \"description\": \"" + escapeQuotes(description) + "\"" +
                          ", \"createdAt\": " + std::to_string(createdAt) +
