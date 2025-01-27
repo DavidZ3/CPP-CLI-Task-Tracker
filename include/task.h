@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include <ctime>
 #include <iostream>
 enum Status : char { todo, inprogress, done };
@@ -8,7 +9,8 @@ class Task {
    public:
     Task(Id id, std::string description);
     Task(Id id, std::string description, Status status);
-    Task(Id id, std::string description, Status status, std::time_t createdAt, std::time_t updatedAt);
+    Task(Id id, std::string description, Status status, std::time_t createdAt,
+         std::time_t updatedAt);
 
    private:
     Id id;
@@ -19,7 +21,7 @@ class Task {
     void updateUpdatedAtToNow();
 
    public:
-    operator std::string () const;
+    operator std::string() const;
     Id getId() const { return this->id; }
     Status getStatus() const { return this->status; }
     std::string getDescription() const { return this->description; }
