@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "task_manager.h"
+#include <string>
 
 TaskCLI::TaskCLI(int argc, const char* const argv[])
     : argc(argc), argv(argv), exitCode(0), manager("./tasks.json") {
@@ -38,18 +39,118 @@ void TaskCLI::processInput() {
     }
 };
 
-void TaskCLI::processAdd() {
+bool is_number(const std::string& s) {
+    std::string::const_iterator it = s.begin();
+    while (it != s.end() && std::isdigit(*it)) ++it;
+    return !s.empty() && it == s.end();
 }
 
-void TaskCLI::processDelete() {}
+void TaskCLI::processAdd() {
+    if(argc != 3){
+        exitCode = 1;
+        printInvalidUsageMsg();
+        return;
+    }
 
-void TaskCLI::processList() {}
+    std::string s(argv[2]);
+    Id id = manager.addTask(s);
+    std::cout << "Task added successfully (ID: " << id << ")" << "\n";
+}
 
-void TaskCLI::processMarkDone() {}
+void TaskCLI::processDelete() {
+    if(argc != 3){
+        exitCode = 1;
+        printInvalidUsageMsg();
+        return;
+    }
 
-void TaskCLI::processMarkInProgress() {}
+    std::string idStr(argv[2]);
+    if(!is_number(idStr)){
+        exitCode = 1;
+        printInvalidUsageMsg();
+        return;
 
-void TaskCLI::processUpdate() {}
+    }
+    Id id(std::stoi(idStr));
+    manager.removeTask(id);
+}
+
+void TaskCLI::processList() {
+    std::vector<Task> tasks;
+    if(argc >= 3){
+        Status status;
+        std::string statusStr(argv[2]);
+        if(!statusStr.compare("todo")){
+            status = Status::todo;
+        }else if(!statusStr.compare("in-progress")){
+            status = Status::inprogress;
+        }else if(!statusStr.compare("done")){
+            status = Status::done;
+        }else{
+            exitCode = 1;
+            printInvalidUsageMsg();
+            return;
+        }
+        tasks = manager.getTasksByStatus(status);
+    }else{
+        tasks = manager.getTasks();
+    }
+    for(auto t : tasks){
+        std::cout << std::string(t);
+    }
+}
+
+void TaskCLI::processMarkDone() {
+    if(argc != 3){
+        exitCode = 1;
+        printInvalidUsageMsg();
+        return;
+    }
+
+    std::string idStr(argv[2]);
+    if(!is_number(idStr)){
+        exitCode = 1;
+        printInvalidUsageMsg();
+        return;
+    }
+    Id id(std::stoi(idStr));
+    manager.updateTaskStatus(id, Status::done);
+}
+
+void TaskCLI::processMarkInProgress() {
+    if(argc != 3){
+        exitCode = 1;
+        printInvalidUsageMsg();
+        return;
+    }
+
+    std::string idStr(argv[2]);
+    if(!is_number(idStr)){
+        exitCode = 1;
+        printInvalidUsageMsg();
+        return;
+    }
+    Id id(std::stoi(idStr));
+    manager.updateTaskStatus(id, Status::inprogress);
+}
+
+void TaskCLI::processUpdate() {
+    if(argc != 4){
+        exitCode = 1;
+        printInvalidUsageMsg();
+        return;
+    }
+
+    std::string idStr(argv[2]);
+    if(!is_number(idStr)){
+        exitCode = 1;
+        printInvalidUsageMsg();
+        return;
+    }
+
+    Id id(std::stoi(idStr));
+    manager.updateTaskDescription(id, std::string(argv[3]));
+}
 
 int main(int argc, char* argv[]) {
     TaskCLI t(argc, argv);
