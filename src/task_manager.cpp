@@ -72,21 +72,3 @@ std::vector<Task> TaskManager::getTasksByStatus(Status status) const {
                  [status](const Task& t) { return t.getStatus() == status; });
     return tasksByStatus;
 }
-
-int main() {
-    std::cout << "Program started" << std::endl;
-    TaskManager manager("./tasks.json");
-    auto tasks{manager.getTasks()};
-    std::cout << "Printing Tasks:" << std::endl;
-    for (auto t : tasks) {
-        std::cout << std::string(t);
-    }
-    manager.addTask("This is another task :D");
-    manager.updateTaskStatus(3, Status::inprogress);
-
-    auto tasks2{manager.getTasks()};
-    std::cout << "Printing Tasks:" << std::endl;
-    for (auto t : tasks2) {
-        std::cout << std::string(t);
-    }
-}
