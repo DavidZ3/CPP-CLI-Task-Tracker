@@ -8,7 +8,7 @@
 
 class TaskCLI {
    public:
-    TaskCLI::TaskCLI(int argc, const char* const argv[]);
+    TaskCLI(int argc, const char* const argv[]);
     bool getExitCode() const { return exitCode; };
     void processInput();
 
