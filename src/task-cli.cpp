@@ -6,12 +6,17 @@
 #include <time.h>
 
 #include "task_manager.h"
+// This is some cooked stuff since localtime is not thread-safe BUT _s is only windows
+// and _r is only linux. WTF!
+#if defined(_MSC_VER)
+#   define localtime_r(T,Tm) (localtime_s(Tm,T) ? NULL : Tm)
+#endif
 
 // Function to format a time_t value into a date or time string.
 std::string DateTime(time_t time, const char* format) {
     char buffer[90];
     struct tm timeinfo;
-    localtime_s(&timeinfo, &time);
+    localtime_r(&time, &timeinfo);
     strftime(buffer, sizeof(buffer), format, &timeinfo);
     return buffer;
 }
