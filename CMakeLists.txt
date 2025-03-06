@@ -17,7 +17,7 @@ file(GLOB SOURCES
 )
 
 # Add the executable target
-add_executable(task-cli ${SOURCES})
+add_executable(task_cli ${SOURCES})
 
 # Link additional libraries (if any)
 # target_link_libraries(task-cli PRIVATE some_library)
