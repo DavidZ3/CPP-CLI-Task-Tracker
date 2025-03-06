@@ -39,7 +39,7 @@ Task::operator std::string() const {
                          ", \"status\": " + std::to_string(status) +
                          ", \"description\": \"" + escapeQuotes(description) + "\"" +
                          ", \"createdAt\": " + std::to_string(createdAt) +
-                         ", \"updatedAt\": " + std::to_string(updatedAt) + "}, \n";
+                         ", \"updatedAt\": " + std::to_string(updatedAt) + "}";
     return output;
 };
 

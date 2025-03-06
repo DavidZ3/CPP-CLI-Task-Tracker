@@ -36,8 +36,13 @@ JsonTaskStorage::JsonTaskStorage(const std::string& jsonPath)
 void JsonTaskStorage::writeTasks(std::vector<Task> tasks) {
     std::ofstream file(jsonPath);
     file << "{\n\t\"tasks\": [\n";
-    for (auto task : tasks) {
+    for (auto& task : tasks) {
         file << "\t\t" << std::string(task);
+        if(&task != &tasks.back()){
+            file << ",\n";
+        }else{
+            file << "\n";
+        }
     }
     file << "\t]\n}";
 };
