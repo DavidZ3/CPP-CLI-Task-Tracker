@@ -19,5 +19,7 @@ file(GLOB SOURCES
 # Add the executable target
 add_executable(task_cli ${SOURCES})
 
-# Link additional libraries (if any)
-# target_link_libraries(task-cli PRIVATE some_library)
+# Copy the executable to the root directory after building
+add_custom_command(TARGET task_cli POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:task_cli> ${CMAKE_SOURCE_DIR}
+)
