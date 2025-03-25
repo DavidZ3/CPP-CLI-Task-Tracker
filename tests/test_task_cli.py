@@ -161,10 +161,12 @@ class TestTaskCLI(unittest.TestCase):
         print(f'stdout: {p.stdout.decode()}')
 
         print('Checking updated task 2 in list')
-        self.assertEqual('An updated task description', data['tasks'][1]['description'], 'Task not found in list')
+        self.assertEqual('An updated task description',
+                         data['tasks'][1]['description'], 'Task not found in list')
 
         print('Checking task 2 not in list')
-        self.assertNotEqual('Another Task Description', data['tasks'][1]['description'], 'Task found in list')
+        self.assertNotEqual('Another Task Description',
+                            data['tasks'][1]['description'], 'Task found in list')
 
     def test_mark_in_progress(self) -> None:
         """ Test marking a task in progress.
