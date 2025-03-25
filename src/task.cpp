@@ -3,13 +3,14 @@
 #include <ctime>
 #include <string>
 
-const std::string escapeQuotes(const std::string& s){
+const std::string escapeBackslashes(const std::string& s){
     std::string escapedString;
     for(auto c : s){
-        if(c == '\"'){
-            escapedString += "\\";
+        if(c == '\\'){
+            escapedString += "\\\\";
+        }else{
+            escapedString += c;
         }
-        escapedString += c;
     }
     return escapedString;
 }
@@ -37,7 +38,7 @@ void Task::updateUpdatedAtToNow() { this->updatedAt = std::time(nullptr); }
 Task::operator std::string() const {
     std::string output = "{\"id\": " + std::to_string(id) +
                          ", \"status\": " + std::to_string(status) +
-                         ", \"description\": \"" + escapeQuotes(description) + "\"" +
+                         ", \"description\": \"" + escapeBackslashes(description) + "\"" +
                          ", \"createdAt\": " + std::to_string(createdAt) +
                          ", \"updatedAt\": " + std::to_string(updatedAt) + "}";
     return output;

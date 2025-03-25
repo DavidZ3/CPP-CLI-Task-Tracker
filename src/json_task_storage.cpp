@@ -7,12 +7,13 @@
 
 #include "task.h"
 
-const std::string unescapeQuotes(const std::string& s){
+const std::string unescapeBackslash(const std::string& s){
     std::string unescapedString;
     bool prevEsc = false;
     for(auto c : s){
-        if(prevEsc && c == '\"'){
+        if(prevEsc && c == '\\'){
             unescapedString.pop_back();
+            prevEsc = false;
         }
         if(c == '\\'){
             prevEsc = true;
@@ -67,7 +68,7 @@ std::vector<Task> JsonTaskStorage::loadTasks() {
     while (std::getline(file, line)) {
         std::smatch matchs;
         if (std::regex_match(line, matchs, taskRePattern)) {
-            Task t(std::stoi(matchs[1]), unescapeQuotes(matchs[3]),
+            Task t(std::stoi(matchs[1]), unescapeBackslash(matchs[3]),
                    (Status)std::stoi(matchs[2]), (time_t)std::stoi(matchs[4]),
                    (time_t)std::stoi(matchs[5]));
             tasks.push_back(t);
