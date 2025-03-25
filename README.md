@@ -14,6 +14,7 @@ A simple and lightweight **Command Line Interface (CLI)** task tracker built in 
 - 📋 Add, update, delete tasks
 - 📌 Track status: `todo`, `in-progress`, `done`
 - 📃 List tasks by status
+- 🕒 Tracks when tasks are created and updated
 - ⚡ Simple, fast, and easy to use
 
 ---
