@@ -1,9 +1,3 @@
-from enum import Enum
-import os
-import json
-import unittest
-import subprocess
-
 """ The API for the task-cli is as follows:
     # Adding a new task
     task-cli add "Buy groceries"
@@ -25,13 +19,23 @@ import subprocess
     task-cli list todo
     task-cli list in-progress
 """
+from enum import Enum
+import os
+import json
+import unittest
+import subprocess
+
 
 class TaskStatus(Enum):
+    """ Enum for task status.
+    """
     TODO = 0
     IN_PROGRESS = 1
     DONE = 2
 
 class TestTaskCLI(unittest.TestCase):
+    """ Test class for the task-cli.
+    """
     def setUp(self) -> None:
         if os.path.exists('tasks.json'):
             os.rename('tasks.json', 'tasks.json.bak')
@@ -110,9 +114,13 @@ class TestTaskCLI(unittest.TestCase):
         self.assertIn('tasks', data)
 
     def test_add_single_ascii(self) -> None:
-        self._test_add('task1', 1)
+        """ Test adding a single task with ascii characters.
+        """
+        self._test_add('task1 :D', 1)
 
     def test_add_multiple_ascii(self) -> None:
+        """ Test adding multiple tasks with ascii characters.
+        """
         self._test_add('task1', 1)
         self._test_add('', 2)
         self._test_add('Yet another task', 3)
@@ -122,6 +130,8 @@ class TestTaskCLI(unittest.TestCase):
         self._test_add(r'\0', 7)
 
     def test_update(self) -> None:
+        """ Test updating a task.
+        """
         self._add_task('Some Task Description')
         self._add_task('Another Task Description')
         self._add_task('Yet Another Task Description')
@@ -157,6 +167,8 @@ class TestTaskCLI(unittest.TestCase):
         self.assertNotEqual('Another Task Description', data['tasks'][1]['description'], 'Task found in list')
 
     def test_mark_in_progress(self) -> None:
+        """ Test marking a task in progress.
+        """
         self._add_task('Some Task Description')
 
         print('Checking task is not in progress')
@@ -184,6 +196,8 @@ class TestTaskCLI(unittest.TestCase):
         self.assertIn('in-progress', task_list, 'Task not found in list')
 
     def test_mark_done(self) -> None:
+        """ Test marking a task done.
+        """
         self._add_task('Some Task Description')
 
         print('Checking task is not done')
@@ -211,6 +225,8 @@ class TestTaskCLI(unittest.TestCase):
         self.assertIn('done', task_list, 'Task not found in list')
 
     def test_delete_task(self) -> None:
+        """ Test deleting a task.
+        """
         self._add_task('Some Task Description')
         self._add_task('Task Description 2')
         self._add_task('Yet Another Task Description')
@@ -241,5 +257,3 @@ class TestTaskCLI(unittest.TestCase):
 
         print('Checking task 1 not in list')
         self.assertNotIn('Task Description 2', p.stdout.decode(), 'Task found in list')
-
-
